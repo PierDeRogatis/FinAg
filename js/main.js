@@ -9,12 +9,16 @@ document.addEventListener('alpine:init', () => {
             this.state = 'searching';
             const formData = new FormData(event.target);
             const data = {
-                email: formData.get('email'),
-                settore: formData.get('settore'),
-                dimensioni: formData.get('dimensioni'),
-                dipendenti: formData.get('dipendenti'),
-                area: formData.get('area'),
-                timestamp: new Date()
+                requestData: {
+                    email: formData.get('email'),
+                    settore: formData.get('settore'),
+                    dimensioni: formData.get('dimensioni'),
+                    dipendenti: formData.get('dipendenti'),
+                    area: formData.get('area')
+                },
+                status: 'pending',
+                analysisResult: null,
+                createdAt: new Date()
             };
 
             try {

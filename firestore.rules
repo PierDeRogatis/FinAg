@@ -1,0 +1,13 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Chiunque può creare una nuova richiesta di analisi.
+    match /grant_requests/{requestId} {
+      allow create: if true;
+
+      // Nessuno può leggere, aggiornare o cancellare le richieste dal client.
+      // Solo il nostro backend (agente AI) potrà farlo in futuro.
+      allow read, update, delete: if false;
+    }
+  }
+}

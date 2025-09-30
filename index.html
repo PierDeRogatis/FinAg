@@ -23,88 +23,8 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
     <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0c0a09; /* Un nero-grigio scuro di base */
-            background-image: 
-                radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.1) 0px, transparent 50%),
-                radial-gradient(at 97% 21%, hsla(135, 98%, 72%, 0.1) 0px, transparent 50%),
-                radial-gradient(at 75% 86%, hsla(355, 98%, 72%, 0.1) 0px, transparent 50%);
-            overflow-x: hidden;
-            color: #d1d5db; /* Testo leggermente più chiaro per contrasto */
-        }
-        
-        .glass-card {
-            background: rgba(30, 27, 27, 0.5); /* Sfondo card più definito */
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s ease, border 0.3s ease, transform 0.3s ease;
-        }
-
-        .glass-card:hover {
-            background: rgba(30, 27, 27, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .cta-button {
-            transition: all 0.3s ease;
-        }
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(34, 197, 94, 0.3), 0 4px 6px -2px rgba(34, 197, 94, 0.2);
-        }
-
-        .animated-gradient-text {
-            background-size: 200% 200%;
-            animation: gradient-animation 6s ease infinite;
-        }
-
-        @keyframes gradient-animation {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        #cursor-glow {
-            position: fixed;
-            width: 800px;
-            height: 800px;
-            background: radial-gradient(circle, rgba(34, 197, 94, 0.12) 0%, rgba(34, 197, 94, 0) 60%);
-            border-radius: 50%;
-            pointer-events: none;
-            transform: translate(-50%, -50%);
-            z-index: 0;
-            transition: left 0.2s ease-out, top 0.2s ease-out;
-        }
-
-        .page-wrapper { position: relative; z-index: 1; }
-        [x-cloak] { display: none !important; }
-
-        /* Animation Styles */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .animate-on-scroll.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Swiper Custom Styles */
-        .swiper-pagination-bullet {
-            background: rgba(255, 255, 255, 0.5) !important;
-        }
-        .swiper-pagination-bullet-active {
-            background: #10b981 !important;
-        }
-        .swiper-button-next, .swiper-button-prev {
-            color: #10b981 !important;
-        }
-    </style>
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body x-data>
@@ -467,44 +387,7 @@
         </footer>
     </div>
 
-    <script>
-        document.addEventListener('alpine:init', () => {
-             // Inizializza lo Swiper per le Storie di Successo
-            const swiper = new Swiper('.case-study-slider', {
-                loop: true,
-                slidesPerView: 1,
-                spaceBetween: 30,
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-                breakpoints: {
-                    768: {
-                        slidesPerView: 2,
-                        spaceBetween: 30
-                    },
-                    1024: {
-                        slidesPerView: 3,
-                        spaceBetween: 30
-                    }
-                },
-                autoplay: {
-                    delay: 5000,
-                    disableOnInteraction: false,
-                },
-            });
-        });
-
-        const glow = document.getElementById('cursor-glow');
-        if (glow) {
-            document.addEventListener('mousemove', (e) => {
-                window.requestAnimationFrame(() => {
-                    glow.style.left = `${e.clientX}px`;
-                    glow.style.top = `${e.clientY}px`;
-                });
-            });
-        }
-    </script>
+    <script defer src="js/main.js"></script>
 </body>
 </html>
 

@@ -15,8 +15,13 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- AlpineJS for mobile menu -->
+    <!-- AlpineJS & Intersect Plugin -->
+    <script src="https://unpkg.com/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    <!-- SwiperJS for Carousel -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
 
     <style>
         body {
@@ -35,12 +40,13 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background 0.3s ease, border 0.3s ease;
+            transition: background 0.3s ease, border 0.3s ease, transform 0.3s ease;
         }
 
         .glass-card:hover {
             background: rgba(30, 27, 27, 0.7);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
         }
 
         .cta-button {
@@ -74,17 +80,34 @@
             transition: left 0.2s ease-out, top 0.2s ease-out;
         }
 
-        /* Contenuti sopra il glow */
-        .page-wrapper {
-            position: relative;
-            z-index: 1;
+        .page-wrapper { position: relative; z-index: 1; }
+        [x-cloak] { display: none !important; }
+
+        /* Animation Styles */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        [x-cloak] { display: none !important; }
+        /* Swiper Custom Styles */
+        .swiper-pagination-bullet {
+            background: rgba(255, 255, 255, 0.5) !important;
+        }
+        .swiper-pagination-bullet-active {
+            background: #10b981 !important;
+        }
+        .swiper-button-next, .swiper-button-prev {
+            color: #10b981 !important;
+        }
     </style>
 </head>
 
-<body>
+<body x-data>
 
     <div id="cursor-glow"></div>
 
@@ -103,7 +126,7 @@
                     <nav class="hidden md:flex items-center space-x-8">
                         <a href="#chi-siamo" class="text-slate-300 hover:text-emerald-400 transition-colors">Chi Siamo</a>
                         <a href="#servizi" class="text-slate-300 hover:text-emerald-400 transition-colors">Servizi</a>
-                        <a href="#bandi" class="text-slate-300 hover:text-emerald-400 transition-colors">Bandi</a>
+                        <a href="#metodo" class="text-slate-300 hover:text-emerald-400 transition-colors">Metodo</a>
                         <a href="#case-study" class="text-slate-300 hover:text-emerald-400 transition-colors">Case Study</a>
                     </nav>
 
@@ -118,12 +141,11 @@
                     </div>
                 </div>
                 
-                <!-- Mobile Menu -->
                 <div x-show="isOpen" x-cloak @click.away="isOpen = false" class="md:hidden mt-4 glass-card rounded-lg p-2">
                     <nav class="flex flex-col space-y-2">
                         <a href="#chi-siamo" @click="isOpen = false" class="text-slate-300 hover:bg-white/10 px-3 py-2 rounded-md">Chi Siamo</a>
                         <a href="#servizi" @click="isOpen = false" class="text-slate-300 hover:bg-white/10 px-3 py-2 rounded-md">Servizi</a>
-                        <a href="#bandi" @click="isOpen = false" class="text-slate-300 hover:bg-white/10 px-3 py-2 rounded-md">Bandi</a>
+                         <a href="#metodo" @click="isOpen = false" class="text-slate-300 hover:bg-white/10 px-3 py-2 rounded-md">Metodo</a>
                         <a href="#case-study" @click="isOpen = false" class="text-slate-300 hover:bg-white/10 px-3 py-2 rounded-md">Case Study</a>
                         <a href="#contatti" @click="isOpen = false" class="bg-emerald-500 text-white font-semibold px-4 py-3 rounded-lg text-center mt-2 cta-button">
                             Consulenza Gratuita
@@ -138,13 +160,13 @@
             <!-- =========== Hero Section =========== -->
             <section id="hero" class="text-white py-20 sm:py-24">
                 <div class="container mx-auto px-6 text-center">
-                    <h1 class="animated-gradient-text text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-sky-300 to-emerald-300">
+                    <h1 x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll animated-gradient-text text-4xl md:text-6xl font-extrabold leading-tight tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-emerald-300 via-sky-300 to-emerald-300">
                         Trasformiamo idee tech in progetti finanziati.
                     </h1>
-                    <p class="mt-6 text-lg md:text-xl max-w-3xl mx-auto text-slate-400">
+                    <p x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll mt-6 text-lg md:text-xl max-w-3xl mx-auto text-slate-400" style="transition-delay: 200ms;">
                         La consulenza che unisce oltre 20 anni di esperienza e la potenza dell'AI per massimizzare il successo dei tuoi bandi, in tutta Italia.
                     </p>
-                    <div class="mt-10">
+                    <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll mt-10" style="transition-delay: 400ms;">
                         <a href="#contatti" class="bg-emerald-500 text-white font-bold px-8 py-4 rounded-lg cta-button text-lg">
                             Richiedi una Consulenza Gratuita
                         </a>
@@ -152,34 +174,30 @@
                 </div>
             </section>
 
-            <!-- =========== Chi Siamo / Team =========== -->
+            <!-- =========== Chi Siamo / Network =========== -->
             <section id="chi-siamo" class="py-20">
                 <div class="container mx-auto px-6">
-                    <div class="text-center mb-12">
+                    <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll text-center mb-12">
                         <span class="text-emerald-400 font-semibold">Il nostro Network</span>
                         <h2 class="text-3xl font-bold text-white sm:text-4xl mt-2">Un Ecosistema di Expertise al Tuo Servizio</h2>
                     </div>
                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <!-- Expertise Card -->
-                        <div class="glass-card p-8 rounded-xl text-center">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-8 rounded-xl text-center">
                             <h3 class="text-xl font-bold text-white">Esperti in Finanza Agevolata</h3>
                             <p class="text-emerald-400 font-semibold mb-2 mt-2">Senior Level</p>
                             <p class="text-slate-400">Profonda conoscenza delle normative e dei bandi complessi a livello nazionale ed europeo.</p>
                         </div>
-                        <!-- Expertise Card -->
-                        <div class="glass-card p-8 rounded-xl text-center">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-8 rounded-xl text-center" style="transition-delay: 150ms;">
                             <h3 class="text-xl font-bold text-white">Business & Financial Strategist</h3>
                              <p class="text-emerald-400 font-semibold mb-2 mt-2">Visione Strategica</p>
                             <p class="text-slate-400">Specialisti nella creazione di business plan solidi e piani finanziari sostenibili per startup e PMI.</p>
                         </div>
-                        <!-- Expertise Card -->
-                        <div class="glass-card p-8 rounded-xl text-center">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-8 rounded-xl text-center" style="transition-delay: 300ms;">
                             <h3 class="text-xl font-bold text-white">AI & Tech Specialist</h3>
                             <p class="text-emerald-400 font-semibold mb-2 mt-2">Vantaggio Competitivo</p>
                             <p class="text-slate-400">Competenze verticali su AI e tecnologie 4.0 per ottimizzare le candidature e massimizzare il successo.</p>
                         </div>
-                         <!-- Expertise Card -->
-                        <div class="glass-card p-8 rounded-xl text-center">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-8 rounded-xl text-center" style="transition-delay: 450ms;">
                             <h3 class="text-xl font-bold text-white">Collaboratori e Advisor</h3>
                             <p class="text-emerald-400 font-semibold mb-2 mt-2">Network Esteso</p>
                             <p class="text-slate-400">Un ecosistema di docenti universitari e advisor esterni per coprire ogni esigenza specifica del progetto.</p>
@@ -191,28 +209,24 @@
             <!-- =========== Servizi =========== -->
             <section id="servizi" class="py-20">
                 <div class="container mx-auto px-6">
-                    <div class="text-center mb-12">
+                    <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll text-center mb-12">
                         <span class="text-emerald-400 font-semibold">Cosa facciamo</span>
                         <h2 class="text-3xl font-bold text-white sm:text-4xl mt-2">Il nostro approccio end-to-end</h2>
                     </div>
                     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <!-- Service Card -->
-                        <div class="glass-card p-6 rounded-lg">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-6 rounded-lg">
                             <h3 class="text-lg font-bold text-white mb-2">Consulenza Bandi</h3>
                             <p class="text-slate-400">Individuiamo le migliori opportunità (regionali, nazionali, europee) per il tuo progetto.</p>
                         </div>
-                        <!-- Service Card -->
-                        <div class="glass-card p-6 rounded-lg">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-6 rounded-lg" style="transition-delay: 150ms;">
                             <h3 class="text-lg font-bold text-white mb-2">Business Plan</h3>
                             <p class="text-slate-400">Elaboriamo business plan dettagliati e convincenti, mettendo in luce l'innovatività del progetto.</p>
                         </div>
-                        <!-- Service Card -->
-                        <div class="glass-card p-6 rounded-lg">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-6 rounded-lg" style="transition-delay: 300ms;">
                             <h3 class="text-lg font-bold text-white mb-2">Rendicontazione</h3>
                             <p class="text-slate-400">Gestiamo tutta la burocrazia della rendicontazione, assicurando la conformità e il flusso dei fondi.</p>
                         </div>
-                        <!-- Service Card -->
-                        <div class="glass-card p-6 rounded-lg">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card p-6 rounded-lg" style="transition-delay: 450ms;">
                             <h3 class="text-lg font-bold text-white mb-2">Analisi AI-Powered</h3>
                             <p class="text-slate-400">Usiamo l'AI per analizzare dati e ottimizzare ogni aspetto della tua candidatura.</p>
                         </div>
@@ -220,45 +234,110 @@
                 </div>
             </section>
 
-            <!-- Call to Action 1 -->
-            <section class="py-20">
+            <!-- =========== Il Nostro Metodo =========== -->
+            <section id="metodo" class="py-20">
                 <div class="container mx-auto px-6">
-                    <div class="glass-card rounded-xl p-10 text-center">
-                         <h2 class="text-3xl font-bold text-white">Hai un progetto in mente?</h2>
-                         <p class="mt-4 text-slate-300 max-w-2xl mx-auto">Non aspettare che il bando giusto scada. Parliamone ora per capire come possiamo aiutarti a realizzarlo.</p>
-                         <div class="mt-8">
-                            <a href="#contatti" class="bg-emerald-500 text-white font-bold px-8 py-4 rounded-lg cta-button text-lg">
-                                Parla con un esperto
-                            </a>
+                    <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll text-center mb-16">
+                        <span class="text-emerald-400 font-semibold">Il Nostro Processo</span>
+                        <h2 class="text-3xl font-bold text-white sm:text-4xl mt-2">4 Passi Verso il Successo</h2>
+                    </div>
+                    <div class="relative">
+                        <!-- Linea della timeline -->
+                        <div class="hidden md:block absolute top-1/2 left-0 w-full h-0.5 bg-white/10 -translate-y-1/2"></div>
+                        <div class="grid md:grid-cols-4 gap-12">
+                            <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll relative text-center">
+                                <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 border-4 border-slate-800">1</div>
+                                <h3 class="font-bold text-white text-lg">Analisi Preliminare</h3>
+                                <p class="text-slate-400 mt-2">Valutiamo gratuitamente la tua idea e i requisiti per identificare i bandi più adatti.</p>
+                            </div>
+                            <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll relative text-center" style="transition-delay: 200ms;">
+                                <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 border-4 border-slate-800">2</div>
+                                <h3 class="font-bold text-white text-lg">Strategia su Misura</h3>
+                                <p class="text-slate-400 mt-2">Definiamo un piano d'azione dettagliato e prepariamo un business plan a prova di bando.</p>
+                            </div>
+                            <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll relative text-center" style="transition-delay: 400ms;">
+                                <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 border-4 border-slate-800">3</div>
+                                <h3 class="font-bold text-white text-lg">Sviluppo Pratica</h3>
+                                <p class="text-slate-400 mt-2">Gestiamo la compilazione e l'invio della domanda, ottimizzando ogni dettaglio con i nostri tool AI.</p>
+                            </div>
+                             <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll relative text-center" style="transition-delay: 600ms;">
+                                <div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4 border-4 border-slate-800">4</div>
+                                <h3 class="font-bold text-white text-lg">Supporto Post-Bando</h3>
+                                <p class="text-slate-400 mt-2">Ti affianchiamo nella fase di rendicontazione per assicurare l'erogazione completa dei fondi.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- =========== Bandi Attivi =========== -->
-            <section id="bandi" class="py-20">
-                <div class="container mx-auto px-6">
-                    <div class="text-center mb-12">
-                        <span class="text-emerald-400 font-semibold">Opportunità</span>
-                        <h2 class="text-3xl font-bold text-white sm:text-4xl mt-2">Bandi Attivi</h2>
-                    </div>
-                    <div class="space-y-4">
-                        <!-- Bando Demo Card -->
-                        <div class="glass-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                            <div>
-                                <h3 class="text-xl font-bold text-white">Bando Tech Fast Lombardia</h3>
-                                <p class="text-slate-400 mt-1">Scadenza: 20/12/2025 • Settore: AI/ML</p>
+
+            <!-- =========== AI Grant Finder =========== -->
+            <section id="ai-finder" class="py-20">
+                 <div class="container mx-auto px-6">
+                    <div x-data="{ submitted: false }" class="glass-card max-w-4xl mx-auto rounded-xl p-8 md:p-12">
+                        <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll text-center mb-8">
+                             <span class="text-emerald-400 font-semibold">Il Tuo Assistente AI</span>
+                             <h2 class="text-3xl font-bold text-white sm:text-4xl mt-2">Trova il Bando Perfetto per la Tua Impresa</h2>
+                             <p class="mt-4 text-slate-300 max-w-2xl mx-auto">Inserisci i dati della tua azienda. Il nostro motore AI analizzerà migliaia di opportunità e ti invierà un report personalizzato via email.</p>
+                         </div>
+                        <template x-if="!submitted">
+                            <form @submit.prevent="submitted = true">
+                                <div class="grid md:grid-cols-2 gap-6">
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label for="email" class="block text-sm font-medium text-slate-300 mb-2">Indirizzo Email</label>
+                                            <input type="email" id="email" name="email" required placeholder="lanuovastartup@email.com" class="w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 focus:ring-emerald-400 focus:border-emerald-400 text-white placeholder-slate-400">
+                                        </div>
+                                        <div>
+                                            <label for="settore" class="block text-sm font-medium text-slate-300 mb-2">Settore di Attività</label>
+                                            <input type="text" id="settore" name="settore" required placeholder="Es. Software, Manifatturiero, Agritech" class="w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 focus:ring-emerald-400 focus:border-emerald-400 text-white placeholder-slate-400">
+                                        </div>
+                                        <div>
+                                            <label for="dimensioni" class="block text-sm font-medium text-slate-300 mb-2">Dimensione Azienda</label>
+                                            <select id="dimensioni" name="dimensioni" required class="w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 focus:ring-emerald-400 focus:border-emerald-400 text-white">
+                                                <option>Startup</option>
+                                                <option>Micro Impresa</option>
+                                                <option>Piccola Impresa</option>
+                                                <option>Media Impresa</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-4">
+                                         <div>
+                                            <label for="dipendenti" class="block text-sm font-medium text-slate-300 mb-2">Numero Dipendenti</label>
+                                            <select id="dipendenti" name="dipendenti" required class="w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 focus:ring-emerald-400 focus:border-emerald-400 text-white">
+                                                <option>0 - 9</option>
+                                                <option>10 - 49</option>
+                                                <option>50 - 249</option>
+                                                <option>250+</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="area" class="block text-sm font-medium text-slate-300 mb-2">Area Geografica Principale</label>
+                                            <select id="area" name="area" required class="w-full px-4 py-3 rounded-md bg-white/10 border border-white/20 focus:ring-emerald-400 focus:border-emerald-400 text-white">
+                                                <option>Nord-Ovest</option>
+                                                <option>Nord-Est</option>
+                                                <option>Centro</option>
+                                                <option>Sud e Isole</option>
+                                                <option>Nazionale</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" class="w-full bg-emerald-500 text-white font-bold px-6 py-4 rounded-lg cta-button text-lg !mt-9">
+                                            Avvia Ricerca AI
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </template>
+                        <template x-if="submitted">
+                            <div class="text-center transition-all duration-300">
+                                <svg class="mx-auto h-16 w-16 text-emerald-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <h3 class="mt-4 text-2xl font-bold text-white">Richiesta Inviata!</h3>
+                                <p class="mt-2 text-slate-300">Grazie! Il nostro agente AI sta analizzando le migliori opportunità per te. Riceverai un report personalizzato con i bandi più adatti alla tua impresa direttamente nella tua casella di posta entro pochi minuti.</p>
                             </div>
-                            <a href="#" class="bg-white/10 text-white font-semibold px-4 py-2 rounded-md hover:bg-white/20 transition-colors whitespace-nowrap">Dettagli</a>
-                        </div>
-                        <!-- Bando Demo Card -->
-                        <div class="glass-card p-6 rounded-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
-                            <div>
-                                <h3 class="text-xl font-bold text-white">Resto al Sud 2.0</h3>
-                                <p class="text-slate-400 mt-1">Scadenza: 31/12/2025 • Settore: Digital</p>
-                            </div>
-                            <a href="#" class="bg-white/10 text-white font-semibold px-4 py-2 rounded-md hover:bg-white/20 transition-colors whitespace-nowrap">Dettagli</a>
-                        </div>
+                        </template>
                     </div>
                 </div>
             </section>
@@ -266,27 +345,53 @@
             <!-- =========== Case Study =========== -->
             <section id="case-study" class="py-20">
                 <div class="container mx-auto px-6">
-                    <div class="text-center mb-12">
+                    <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll text-center mb-12">
                         <span class="text-emerald-400 font-semibold">I nostri risultati</span>
                         <h2 class="text-3xl font-bold text-white sm:text-4xl mt-2">Storie di successo</h2>
                     </div>
-                    <div class="grid md:grid-cols-2 gap-8">
-                        <!-- Case Study Card -->
-                        <div class="glass-card rounded-xl overflow-hidden">
-                            <img src="https://placehold.co/600x400/10B981/FFFFFF?text=Milano+Fintech" alt="Immagine progetto Milano Fintech" class="w-full h-56 object-cover opacity-70">
-                            <div class="p-8">
-                                <h3 class="text-2xl font-bold text-white">Milano Fintech Solutions</h3>
-                                <p class="mt-4 text-slate-300">Abbiamo guidato la startup nell'ottenere un finanziamento di €500.000, consentendo lo sviluppo di una nuova piattaforma AI.</p>
+                    <!-- Swiper -->
+                    <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll swiper case-study-slider">
+                        <div class="swiper-wrapper pb-12">
+                            <!-- Slide 1 -->
+                            <div class="swiper-slide h-full">
+                                <div class="glass-card rounded-xl overflow-hidden h-full">
+                                    <img src="https://placehold.co/600x400/10B981/FFFFFF?text=Milano+Fintech" alt="Immagine progetto Milano Fintech" class="w-full h-56 object-cover opacity-70">
+                                    <div class="p-8">
+                                        <h3 class="text-2xl font-bold text-white">Milano Fintech Solutions</h3>
+                                        <p class="mt-4 text-slate-300">Abbiamo guidato la startup nell'ottenere un finanziamento di €500.000, consentendo lo sviluppo di una nuova piattaforma AI.</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Slide 2 -->
+                            <div class="swiper-slide h-full">
+                                <div class="glass-card rounded-xl overflow-hidden h-full">
+                                    <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Agridata" alt="Immagine progetto AgriData" class="w-full h-56 object-cover opacity-70">
+                                    <div class="p-8">
+                                        <h3 class="text-2xl font-bold text-white">AgriData Solutions</h3>
+                                        <p class="mt-4 text-slate-300">Grazie al nostro supporto per un bando Transizione 4.0, l'azienda ha ottenuto un credito d'imposta per implementare sensori IoT.</p>
+                                    </div>
+                                </div>
+                            </div>
+                             <!-- Slide 3 -->
+                            <div class="swiper-slide h-full">
+                                <div class="glass-card rounded-xl p-8 h-full flex flex-col justify-center">
+                                    <p class="text-xl italic text-slate-200">"Un partner strategico, non un semplice consulente. Hanno capito la nostra visione e l'hanno trasformata in un progetto finanziabile."</p>
+                                    <p class="mt-6 font-bold text-white">- CEO, SaaS Innovators</p>
+                                </div>
+                            </div>
+                             <!-- Slide 4 -->
+                            <div class="swiper-slide h-full">
+                                 <div class="glass-card rounded-xl overflow-hidden h-full">
+                                    <img src="https://placehold.co/600x400/8B5CF6/FFFFFF?text=BioMed+Tech" alt="Immagine progetto BioMed Tech" class="w-full h-56 object-cover opacity-70">
+                                    <div class="p-8">
+                                        <h3 class="text-2xl font-bold text-white">BioMed Tech</h3>
+                                        <p class="mt-4 text-slate-300">Supporto cruciale per l'accesso a fondi europei (Horizon) per un progetto di ricerca e sviluppo del valore di 1.2M di euro.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <!-- Case Study Card -->
-                        <div class="glass-card rounded-xl overflow-hidden">
-                            <img src="https://placehold.co/600x400/3B82F6/FFFFFF?text=Agridata" alt="Immagine progetto AgriData" class="w-full h-56 object-cover opacity-70">
-                            <div class="p-8">
-                                <h3 class="text-2xl font-bold text-white">AgriData Solutions</h3>
-                                <p class="mt-4 text-slate-300">Grazie al nostro supporto per un bando Transizione 4.0, l'azienda ha ottenuto un credito d'imposta per implementare sensori IoT.</p>
-                            </div>
-                        </div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
                     </div>
                 </div>
             </section>
@@ -294,13 +399,12 @@
             <!-- =========== Blog =========== -->
             <section id="blog" class="py-20">
                 <div class="container mx-auto px-6">
-                    <div class="text-center mb-12">
+                    <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll text-center mb-12">
                          <span class="text-emerald-400 font-semibold">Approfondimenti</span>
                         <h2 class="text-3xl font-bold text-white sm:text-4xl mt-2">Dal nostro Blog</h2>
                     </div>
                     <div class="grid md:grid-cols-3 gap-8">
-                        <!-- Blog Post Card -->
-                        <div class="glass-card rounded-lg overflow-hidden group">
+                         <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card rounded-lg overflow-hidden group">
                             <a href="#">
                                <div class="p-6">
                                    <p class="text-sm text-slate-400 mb-2">GUIDA</p>
@@ -308,8 +412,7 @@
                                </div>
                             </a>
                         </div>
-                         <!-- Blog Post Card -->
-                        <div class="glass-card rounded-lg overflow-hidden group">
+                        <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card rounded-lg overflow-hidden group" style="transition-delay: 200ms;">
                             <a href="#">
                                <div class="p-6">
                                    <p class="text-sm text-slate-400 mb-2">ANALISI</p>
@@ -317,8 +420,7 @@
                                </div>
                             </a>
                         </div>
-                         <!-- Blog Post Card -->
-                        <div class="glass-card rounded-lg overflow-hidden group">
+                         <div x-intersect.margin.-100px="$el.classList.add('is-visible')" class="animate-on-scroll glass-card rounded-lg overflow-hidden group" style="transition-delay: 400ms;">
                             <a href="#">
                                <div class="p-6">
                                    <p class="text-sm text-slate-400 mb-2">NEWS</p>
@@ -334,7 +436,7 @@
             <section id="contatti" class="py-20">
                 <div class="container mx-auto px-6">
                     <div class="glass-card rounded-xl p-8 md:p-12 lg:p-16">
-                        <div class="grid lg:grid-cols-2 gap-12 items-center">
+                        <div x-intersect="$el.classList.add('is-visible')" class="animate-on-scroll grid lg:grid-cols-2 gap-12 items-center">
                             <div>
                                 <h2 class="text-3xl sm:text-4xl font-bold text-white">Pronto a trasformare la tua idea in realtà?</h2>
                                 <p class="mt-4 text-slate-300 text-lg">
@@ -366,12 +468,33 @@
     </div>
 
     <script>
-        // Ho rimosso il listener 'DOMContentLoaded' e ho aggiunto 'defer' allo script di AlpineJS
-        // per un caricamento più affidabile e per evitare problemi di sincronizzazione.
-        
-        // Lo script per l'effetto glow del cursore rimane invariato, 
-        // ma ora è più pulito e meno soggetto a conflitti.
-        
+        document.addEventListener('alpine:init', () => {
+             // Inizializza lo Swiper per le Storie di Successo
+            const swiper = new Swiper('.case-study-slider', {
+                loop: true,
+                slidesPerView: 1,
+                spaceBetween: 30,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                breakpoints: {
+                    768: {
+                        slidesPerView: 2,
+                        spaceBetween: 30
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        spaceBetween: 30
+                    }
+                },
+                autoplay: {
+                    delay: 5000,
+                    disableOnInteraction: false,
+                },
+            });
+        });
+
         const glow = document.getElementById('cursor-glow');
         if (glow) {
             document.addEventListener('mousemove', (e) => {

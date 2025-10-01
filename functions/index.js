@@ -3,7 +3,6 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 
 admin.initializeApp();
-const firestore = admin.firestore();
 
 // Recupera le chiavi API in modo sicuro dalla configurazione dell'ambiente
 const GEMINI_API_KEY = functions.config().google.gemini_key;

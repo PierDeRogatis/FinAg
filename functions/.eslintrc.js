@@ -11,7 +11,7 @@ module.exports = {
     "google",
   ],
   rules: {
-    "max-len": ["error", {"code": 320}],
+    "max-len": ["error", {"code": 620}],
     "no-restricted-globals": ["error", "name", "length"],
     "prefer-arrow-callback": "error",
     "quotes": ["error", "double", {"allowTemplateLiterals": true}],

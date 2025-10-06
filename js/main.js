@@ -1,14 +1,24 @@
+// Import Firebase per la gestione del database
 import { db } from './firebase-config.js';
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-document.addEventListener('alpine:init', () => {
-    // Componente Alpine per il form AI Finder
-    Alpine.data('aiFinderForm', () => ({
-        state: 'idle', // Valori possibili: 'idle', 'searching', 'submitted'
+// Attende che il DOM sia completamente caricato
+document.addEventListener('DOMContentLoaded', () => {
+    // Registra il componente Alpine prima dell'inizializzazione
+    window.Alpine.data('aiFinderForm', () => ({
+        // Stato del form: 'idle', 'searching', 'submitted'
+        state: 'idle',
+        
+        // Gestione submit del form AI Finder
         async handleSubmit(event) {
+            // Cambia stato a 'searching' durante il processo
             this.state = 'searching';
+            
+            // Estrae i dati dal form
             const formData = new FormData(event.target);
-            const data = {
+            
+            // Costruisce l'oggetto strutturato per Firestore
+            const structuredData = {
                 requestData: {
                     email: formData.get('email'),
                     settore: formData.get('settore'),
@@ -22,41 +32,54 @@ document.addEventListener('alpine:init', () => {
             };
 
             try {
-                // Aggiunge un nuovo documento alla collection 'grant_requests'
-                await addDoc(collection(db, "grant_requests"), data);
-                // Simula un'attesa per l'effetto di ricerca
+                // Salva il documento nella collection 'grant_requests'
+                await addDoc(collection(db, "grant_requests"), structuredData);
+                
+                // Simula tempo di elaborazione per UX
                 setTimeout(() => {
                     this.state = 'submitted';
                 }, 2000);
-            } catch (e) {
-                console.error("Errore nell'aggiungere il documento: ", e);
+            } catch (error) {
+                console.error("Errore durante il salvataggio:", error);
                 alert("Si è verificato un errore durante l'invio. Riprova.");
-                this.state = 'idle'; // Resetta lo stato in caso di errore
+                this.state = 'idle';
             }
         }
     }));
 
-    // Inizializza lo Swiper per le Storie di Successo
+    // Inizializzazione Swiper per il carousel Case Study
     const swiper = new Swiper('.case-study-slider', {
         loop: true,
         slidesPerView: 1,
         spaceBetween: 30,
-        pagination: { el: '.swiper-pagination', clickable: true },
-        breakpoints: {
-            768: { slidesPerView: 2, spaceBetween: 30 },
-            1024: { slidesPerView: 3, spaceBetween: 30 }
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
         },
-        autoplay: { delay: 5000, disableOnInteraction: false },
+        breakpoints: {
+            768: {
+                slidesPerView: 2,
+                spaceBetween: 30
+            },
+            1024: {
+                slidesPerView: 3,
+                spaceBetween: 30
+            }
+        },
+        autoplay: {
+            delay: 5000,
+            disableOnInteraction: false
+        }
     });
 });
 
-// Logica per l'effetto glow del cursore
-const glow = document.getElementById('cursor-glow');
-if (glow) {
+// Effetto glow del cursore
+const cursorGlow = document.getElementById('cursor-glow');
+if (cursorGlow) {
     document.addEventListener('mousemove', (e) => {
         window.requestAnimationFrame(() => {
-            glow.style.left = `${e.clientX}px`;
-            glow.style.top = `${e.clientY}px`;
+            cursorGlow.style.left = `${e.clientX}px`;
+            cursorGlow.style.top = `${e.clientY}px`;
         });
     });
 }

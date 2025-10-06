@@ -28,5 +28,20 @@
       "**/.*",
       "**/node_modules/**"
     ]
+  },
+  "emulators": {
+    "functions": {
+      "port": 5555
+    },
+    "firestore": {
+      "port": 8082
+    },
+    "hosting": {
+      "port": 5554
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
   }
 }

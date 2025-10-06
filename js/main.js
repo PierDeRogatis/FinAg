@@ -2,10 +2,10 @@
 import { db } from './firebase-config.js';
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js";
 
-// Attende che il DOM sia completamente caricato
-document.addEventListener('DOMContentLoaded', () => {
-    // Registra il componente Alpine prima dell'inizializzazione
-    window.Alpine.data('aiFinderForm', () => ({
+// Inizializzazione Alpine.js e componenti
+document.addEventListener('alpine:init', () => {
+    // Componente Alpine per il form AI Grant Finder
+    Alpine.data('aiFinderForm', () => ({
         // Stato del form: 'idle', 'searching', 'submitted'
         state: 'idle',
         
